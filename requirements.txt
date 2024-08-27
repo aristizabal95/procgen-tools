@@ -27,3 +27,4 @@ prettytable
 # pyqt5 # procgen build gets mad if this isn't here
 # must be lauro branch. master is not supported (different parsing would be required)
 # git+https://github.com/UlisseMini/procgenAISC@lauro
+gdown==4.7.3

@@ -5,6 +5,7 @@ import requests
 import gzip
 import tarfile
 from tqdm import tqdm
+import gdown
 
 
 def _extract_tgz(path):
@@ -30,21 +31,7 @@ def _fetch(url, filepath: str = None, force: bool = False):
         Path(filepath).parent.mkdir(parents=True, exist_ok=True)
 
     # download file
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        total_size = int(r.headers.get("content-length", 0))
-        block_size = 1024
-        t = tqdm(total=total_size, unit="iB", unit_scale=True)
-        t.set_description(f"Downloading {url}")
-        with open(filepath, "wb") as f:
-            for data in r.iter_content(block_size):
-                t.update(len(data))
-                f.write(data)
-        t.close()
-        if total_size != 0 and t.n != total_size:
-            raise ValueError(
-                f"Error: downloaded {t.n} bytes, expected {total_size} bytes."
-            )
+    gdown.download(url, filepath)
 
     # extract file (if needed)
     if filepath.endswith(".tgz") or filepath.endswith(".tar.gz"):
@@ -94,19 +81,23 @@ def setup(
         force_redownload_vfields = True
 
     if dl_episode_data:
-        _fetch("https://nerdsniper.net/mats/episode_data.tgz", force=force)
+        # _fetch("https://nerdsniper.net/mats/episode_data.tgz", force=force)
+        print("Not supported")
     if dl_patch_data:
-        _fetch("https://nerdsniper.net/mats/patch_data.tgz", force=force)
+        # _fetch("https://nerdsniper.net/mats/patch_data.tgz", force=force)
+        print("Not supported")
     if dl_data:
-        _fetch(
-            "https://nerdsniper.net/mats/data.tgz",
-            force=force or force_redownload_vfields,
-        )
+        # _fetch(
+        #     "https://nerdsniper.net/mats/data.tgz",
+        #     force=force or force_redownload_vfields,
+        # )
+        print("Not supported")
     if dl_stats:
-        _fetch("https://nerdsniper.net/mats/episode_stats_data.tgz", force=force)
+        # _fetch("https://nerdsniper.net/mats/episode_stats_data.tgz", force=force)
+        print("Not supported")
 
     _fetch(
-        "https://nerdsniper.net/mats/model_rand_region_5.pth",
+        "https://drive.google.com/uc?id=17p6aFRIHIilP_3toWqbUbpl4jY4A2x5O",
         "trained_models/maze_I/model_rand_region_5.pth",
         force=force,
     )
