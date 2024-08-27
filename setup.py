@@ -27,5 +27,6 @@ setup(
         "captum>=0.6.0",
         "kaleido>=0.2.1",
         "funcy>=1.18",
+        "gdown==4.7.3",
     ]
 )
