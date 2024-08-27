@@ -13,7 +13,7 @@ networkx==3.0
 
 # Monte's code
 pandas>=1.5.3
-git+https://github.com/UlisseMini/circrl # temp until fixed for python 3.8
+git+https://github.com/UlisseMini/circrl@baefe43 # temp until fixed for python 3.8
 plotly>=5.13.0
 networkx>=3.0
 
@@ -27,3 +27,4 @@ prettytable
 # pyqt5 # procgen build gets mad if this isn't here
 # must be lauro branch. master is not supported (different parsing would be required)
 # git+https://github.com/UlisseMini/procgenAISC@lauro
+gdown==4.7.3
