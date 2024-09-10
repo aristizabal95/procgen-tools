@@ -39,8 +39,14 @@ def get_cheese_and_dec_nodes(seq):
     inner_grid = maze_env_state.inner_grid()
     grid_graph = maze.maze_grid_to_graph(inner_grid)
     #px.imshow(rearrange(episode_data['seq'].obs[0].values, 'c h w -> h w c')).show()
-    cheese_node = maze.get_cheese_pos(inner_grid)
-    dec_node = maze.get_decision_square_from_grid_graph(inner_grid, grid_graph)
+    try:
+        cheese_node = maze.get_cheese_pos(inner_grid)
+    except KeyError:
+        cheese_node = None
+    try:
+        dec_node = maze.get_decision_square_from_grid_graph(inner_grid, grid_graph)
+    except (NoDecisionSquareException, KeyError):
+        dec_node = None
     return cheese_node, dec_node, inner_grid, grid_graph
 
 # Get the decision square timestep
@@ -94,18 +100,13 @@ def proc_probe_data(episode_data):
         '''
     seq = episode_data['seq']
     cheese_node, dec_node, inner_grid, grid_graph = get_cheese_and_dec_nodes(seq)
-    if dec_node is None:
-        raise NoDecisionSquareException
-    dec_step = get_dec_step(seq, dec_node)
-    if dec_step is None:
-        raise NotReachedDecisionSquareException
     # Return stuff
     return dict(
         dec_node = dec_node,
         cheese_node = cheese_node,
         did_get_cheese = episode_data['seq'].rewards[-1].values[()]>0.,
-        obs = seq.obs.sel(step=dec_step).astype(np.float32),
-        dec_state_bytes = seq.custom['state_bytes'].sel(step=dec_step).values[()]
+        obs = seq.obs.sel(step=0).astype(np.float32),
+        dec_state_bytes = seq.custom['state_bytes'].sel(step=0).values[()]
     )
 
 def proc_probe_data_initial(episode_data):
